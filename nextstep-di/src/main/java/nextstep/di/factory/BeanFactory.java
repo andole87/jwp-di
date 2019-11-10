@@ -17,14 +17,16 @@ public class BeanFactory {
 
     private Map<Class<?>, Object> beans = Maps.newHashMap();
 
-    private CircularReferenceDetector circularReferenceDetector = new CircularReferenceDetector();
+    private CircularReferenceDetector circularReferenceDetector;
 
     public BeanFactory(Set<Class<?>> preInstantiateBeans) {
         this.preInstantiateBeans = preInstantiateBeans;
+        this.circularReferenceDetector = new CircularReferenceDetector();
     }
 
     public BeanFactory() {
         this.preInstantiateBeans = new HashSet<>();
+        this.circularReferenceDetector = new CircularReferenceDetector();
     }
 
     @SuppressWarnings("unchecked")
