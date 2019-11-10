@@ -7,23 +7,23 @@ import org.slf4j.LoggerFactory;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class BeanFactory {
     private static final Logger logger = LoggerFactory.getLogger(BeanFactory.class);
 
     private Set<Class<?>> preInstanticateBeans;
-
     private Map<Class<?>, Object> beans = Maps.newHashMap();
 
     private CircularReferenceDetector circularReferenceDetector = new CircularReferenceDetector();
 
     public BeanFactory(Set<Class<?>> preInstanticateBeans) {
         this.preInstanticateBeans = preInstanticateBeans;
+    }
+
+    public BeanFactory() {
+        this.preInstanticateBeans = new HashSet<>();
     }
 
     @SuppressWarnings("unchecked")
@@ -65,5 +65,13 @@ public class BeanFactory {
         return beans.keySet().stream()
                 .filter(key -> key.isAnnotationPresent(annotation))
                 .collect(Collectors.toMap(key -> key, key -> beans.get(key)));
+    }
+
+    public void addBeanType(Class<?> clazz) {
+        preInstanticateBeans.add(clazz);
+    }
+
+    public void addAllBeanType(Set<Class<?>> types) {
+        preInstanticateBeans.addAll(types);
     }
 }
