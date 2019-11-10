@@ -1,6 +1,5 @@
-package nextstep.mvc.tobe;
+package nextstep.di.factory;
 
-import nextstep.di.factory.BeanFactory;
 import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

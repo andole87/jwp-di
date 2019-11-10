@@ -7,10 +7,7 @@ import org.slf4j.LoggerFactory;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class BeanFactory {
@@ -24,6 +21,10 @@ public class BeanFactory {
 
     public BeanFactory(Set<Class<?>> preInstantiateBeans) {
         this.preInstantiateBeans = preInstantiateBeans;
+    }
+
+    public BeanFactory() {
+        this.preInstantiateBeans = new HashSet<>();
     }
 
     @SuppressWarnings("unchecked")
@@ -65,5 +66,17 @@ public class BeanFactory {
         return beans.keySet().stream()
                 .filter(key -> key.isAnnotationPresent(annotation))
                 .collect(Collectors.toMap(key -> key, key -> beans.get(key)));
+    }
+
+    public void addBeanType(Class<?> type) {
+        this.preInstantiateBeans.add(type);
+    }
+
+    public void addAllBeanTypes(Collection<Class<?>> types) {
+        this.preInstantiateBeans.addAll(types);
+    }
+
+    public void registerBean(Class<?> beanType, Object bean) {
+        beans.put(beanType, bean);
     }
 }
