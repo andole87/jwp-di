@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 
 import java.lang.annotation.Annotation;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -28,7 +29,7 @@ public class BeanScanner {
     private Set<Class<?>> scanBeans() {
         return Arrays.stream(types)
                 .map(type -> reflections.getTypesAnnotatedWith(type))
-                .flatMap(sets -> sets.stream())
+                .flatMap(Collection::stream)
                 .collect(Collectors.toSet());
     }
 }
